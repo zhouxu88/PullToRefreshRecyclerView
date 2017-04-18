@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">RefrshRecyclerView</string>
+
+    <string name="pull_label">下拉刷新</string>
+    <string name="refreshing_label">正在刷新...</string>
+    <string name="release_label">松开立即刷新</string>
+
+    <string name="load_more_label">上拉加载更多</string>
+    <string name="loading_label">正在加载数据...</string>
+    <string name="load_release_label">松开立即刷新</string>
+</resources>
