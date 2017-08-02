@@ -15,7 +15,9 @@ import android.widget.TextView;
 
 import com.androidkun.callback.PullToRefreshListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
 /**
  * Created by Kun on 2017/2/7.
  * GitHub: https://github.com/AndroidKun
@@ -76,33 +78,34 @@ public class RefreshHead extends LinearLayout {
     }
 
 
-    public void setRefreshArrowResource(int resId){
+    public void setRefreshArrowResource(int resId) {
         imageArrow.setImageResource(resId);
     }
 
-    public void setRefreshingResource(int resId){
+    public void setRefreshingResource(int resId) {
         imageRefreshing.setImageResource(resId);
     }
-    public void displayLastRefreshTime(boolean display){
+
+    public void displayLastRefreshTime(boolean display) {
         showLastRefreshTime = display;
     }
 
     public void onMove(int move) {
         int newVisibleHeight = getVisibleHeight() + move;
         if (newVisibleHeight >= refreshLimitHeight && refreshState != STATE_RELEASE_TO_REFRESH) {
-            if(imageArrow.getVisibility()!=VISIBLE ) imageArrow.setVisibility(VISIBLE);
+            if (imageArrow.getVisibility() != VISIBLE) imageArrow.setVisibility(VISIBLE);
             refreshState = STATE_RELEASE_TO_REFRESH;
             textTip.setText(R.string.release_refresh);
             rotationAnimator(180f);
         }
         if (newVisibleHeight < refreshLimitHeight && refreshState != STATE_NORMAL) {
-            if(imageArrow.getVisibility()!=VISIBLE ) imageArrow.setVisibility(VISIBLE);
+            if (imageArrow.getVisibility() != VISIBLE) imageArrow.setVisibility(VISIBLE);
             refreshState = STATE_NORMAL;
             textTip.setText(R.string.pull_to_refresh);
-            if(lastRefreshDate==null){
+            if (lastRefreshDate == null) {
                 textLastRefreshTime.setVisibility(GONE);
-            }else{
-                if(showLastRefreshTime) {
+            } else {
+                if (showLastRefreshTime) {
                     textLastRefreshTime.setVisibility(VISIBLE);
                     textLastRefreshTime.setText(friendlyTime(lastRefreshDate));
                 }
@@ -139,7 +142,7 @@ public class RefreshHead extends LinearLayout {
     }
 
     public void startRefreshingAnimation() {
-        animator = ValueAnimator.ofFloat(imageRefreshing.getRotation(), imageRefreshing.getRotation()+359);
+        animator = ValueAnimator.ofFloat(imageRefreshing.getRotation(), imageRefreshing.getRotation() + 359);
         animator.setDuration(1000).start();
         animator.setInterpolator(new LinearInterpolator());
         animator.setRepeatCount(ValueAnimator.INFINITE);
@@ -265,29 +268,33 @@ public class RefreshHead extends LinearLayout {
 
     public static String friendlyTime(Date time) {
         //获取time距离当前的秒数
-        int ct = (int)((System.currentTimeMillis() - time.getTime())/1000);
-
-        if(ct == 0) {
-            return "刚刚";
-        }
-
-        if(ct > 0 && ct < 60) {
-            return ct + "秒前";
-        }
-
-        if(ct >= 60 && ct < 3600) {
-            return Math.max(ct / 60,1) + "分钟前";
-        }
-        if(ct >= 3600 && ct < 86400)
-            return ct / 3600 + "小时前";
-        if(ct >= 86400 && ct < 2592000){ //86400 * 30
-            int day = ct / 86400 ;
-            return day + "天前";
-        }
-        if(ct >= 2592000 && ct < 31104000) { //86400 * 30
-            return ct / 2592000 + "月前";
-        }
-        return ct / 31104000 + "年前";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间       
+        String currTime = formatter.format(curDate);
+        return currTime;
+//        int ct = (int) ((System.currentTimeMillis() - time.getTime()) / 1000);
+//
+//        if (ct == 0) {
+//            return "刚刚";
+//        }
+//
+//        if (ct > 0 && ct < 60) {
+//            return ct + "秒前";
+//        }
+//
+//        if (ct >= 60 && ct < 3600) {
+//            return Math.max(ct / 60, 1) + "分钟前";
+//        }
+//        if (ct >= 3600 && ct < 86400)
+//            return ct / 3600 + "小时前";
+//        if (ct >= 86400 && ct < 2592000) { //86400 * 30
+//            int day = ct / 86400;
+//            return day + "天前";
+//        }
+//        if (ct >= 2592000 && ct < 31104000) { //86400 * 30
+//            return ct / 2592000 + "月前";
+//        }
+//        return ct / 31104000 + "年前";
     }
 
 }
